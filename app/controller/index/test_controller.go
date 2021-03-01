@@ -29,8 +29,8 @@ func sum(s []int, c chan int) {
 }
 
 func (receiver *TestController) Route() {
-	fmt.Println("param", receiver.Context.ParamData())
-	fmt.Println("Get", receiver.Context.GetData())
-	fmt.Println("Post", receiver.Context.PostData())
+	fmt.Println("param", receiver.Context.Param)
+	fmt.Println("Get", receiver.Context.Get)
+	fmt.Println("Post", receiver.Context.Post)
 	fmt.Println("---------")
 }

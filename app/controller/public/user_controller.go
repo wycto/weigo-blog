@@ -1,11 +1,13 @@
 package public
 
 import (
+	"fmt"
 	"github.com/wycto/weigo"
 	"github.com/wycto/weigo/datatype"
 	"github.com/wycto/weigo/msg"
 	"github.com/wycto/weigo/tools/datetime"
 	"github.com/wycto/weigo/tools/encrypt"
+	"reflect"
 	"weigo-blog/app/model"
 )
 
@@ -15,6 +17,16 @@ type UserController struct {
 
 func (c *UserController) Login() {
 	if c.Context.IsPost() {
+
+		fmt.Println(c.Context.Param)
+		fmt.Println(c.Context.Param.Get("IDArr"))
+		fmt.Println(reflect.TypeOf(c.Context.Param.Get("IDArr")))
+
+		var IDArr []string
+
+		fmt.Println(c.Context.Param.SetStruct("IDArr", &IDArr))
+		fmt.Println(IDArr)
+
 		//参数校验
 		if c.Context.NotHasOrEmpty("username", "password") {
 			c.ResponseErrorMessage(msg.ParamsMissingORInvalid, nil)
@@ -22,15 +34,15 @@ func (c *UserController) Login() {
 		}
 
 		//存在校验
-		row, err := model.UserModel().Where(&datatype.Row{"username": c.Context.Param("username")}).Find()
+		row, err := model.UserModel().Where(&datatype.Row{"username": c.Context.Param.GetString("username"), "password": encrypt.MD5(c.Context.Param.GetString("password"))}).Find()
 		if err != nil {
 			c.ResponseErrorMessage(msg.DataAccountNotExists, nil)
 			return
 		}
 
 		//密码校验
-		if row.Get("password") != encrypt.MD5(c.Context.Param("password")) {
-			c.ResponseErrorMessage(msg.DataPasswordError, nil)
+		if row.Get("password") != encrypt.MD5(c.Context.Param.GetString("password")) {
+			c.ResponseErrorMessage(msg.DataPasswordError, c.Context.Param.GetString("password"))
 			return
 		}
 
@@ -50,15 +62,15 @@ func (c *UserController) Register() {
 		}
 
 		//存在校验
-		_, err := model.UserModel().Where(&datatype.Row{"username": c.Context.Param("username")}).Find()
+		_, err := model.UserModel().Where(&datatype.Row{"username": c.Context.Param.GetString("username")}).Find()
 		if err == nil {
 			c.ResponseErrorMessage(msg.DataAccountExists, nil)
 			return
 		}
 
 		//插入数据
-		data := datatype.Row{"username": c.Context.Param("username")}
-		data.Set("password", weigo.MD5(c.Context.Param("password")))
+		data := datatype.Row{"username": c.Context.Param.GetString("username")}
+		data.Set("password", weigo.MD5(c.Context.Param.GetString("password")))
 		data.Set("status", 1)
 		data.Set("register_time", datetime.DateTime())
 		data.Set("register_ip", weigo.GetIP())
