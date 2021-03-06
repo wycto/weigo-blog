@@ -21,6 +21,7 @@ func (c *UserController) Login() {
 		fmt.Println(c.Context.Param)
 		fmt.Println(c.Context.Param.Get("IDArr"))
 		fmt.Println(reflect.TypeOf(c.Context.Param.Get("IDArr")))
+		fmt.Println(c.Context.Param.GetType("IDArr"))
 
 		var IDArr []string
 
