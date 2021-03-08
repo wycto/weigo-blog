@@ -40,7 +40,7 @@ func main() {
 	//遍历路由器的方法，并将其存入控制器映射变量中
 	for i := 0; i < mNum; i++ {
 		mName := vft.Method(i).Name
-		fmt.Println("index:", i, " MethodName:", mName)
+		fmt.Println("default:", i, " MethodName:", mName)
 		crMap[mName] = vf.Method(i) //<<<
 	}
 	//演示

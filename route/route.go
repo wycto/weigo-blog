@@ -1,8 +1,8 @@
 package route
 
 import (
-	"github.com/julienschmidt/httprouter"
 	"github.com/wycto/weigo"
+	"weigo-blog/app/controller/admin"
 	"weigo-blog/app/controller/index"
 	"weigo-blog/app/controller/public"
 )
@@ -12,11 +12,11 @@ func init() {
 	weigo.Router("/", &index.DefaultController{})
 	weigo.Router("/public/user/", &public.UserController{})
 
-	weigo.Router("/index/user/", &index.UserController{})
-	weigo.Router("/index/api/", &index.APIController{})
-	weigo.Router("/index/test/", &index.TestController{})
-	weigo.Router("/index/model/", &index.ModelController{})
+	weigo.Router("/default/user/", &index.UserController{})
+	weigo.Router("/default/api/", &index.APIController{})
+	weigo.Router("/default/test/", &index.TestController{})
+	weigo.Router("/default/model/", &index.ModelController{})
 
-	httprouter.New().POST("/public/test/:action", nil)
+	weigo.Router("/admin/user/", &admin.UserController{})
 
 }
