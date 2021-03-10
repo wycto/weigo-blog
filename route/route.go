@@ -9,6 +9,7 @@ import (
 
 func init() {
 	//路由定义必须遵循MVC：/public/user/  代表public应用（模块）、user控制器
+	weigo.RouterStatic("/static/", "static")
 	weigo.Router("/", &index.DefaultController{})
 	weigo.Router("/public/user/", &public.UserController{})
 

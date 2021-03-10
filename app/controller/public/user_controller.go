@@ -49,7 +49,7 @@ func (c *UserController) Login() {
 
 		c.ResponseSuccess("登录成功", row)
 	} else {
-		c.MethodNotAllowed()
+		c.Display("")
 	}
 	return
 }
